@@ -2,10 +2,8 @@
 
 import argparse
 import urllib
+import getpass
 from selenium import webdriver
-
-UNIQNAME = # CHANGEME
-PASSWORD = # CHANGEME
 
 FILE_EXT = ".mp4"
 
@@ -26,6 +24,8 @@ def parse_args():
 def main():
     args = parse_args()
 
+    UNIQNAME = raw_input("Uniqname: ")
+    PASSWORD = getpass.getpass("Password: ")
     # initialize browser
     browser = webdriver.Chrome(executable_path = './chromedriver')
     browser.implicitly_wait(60) # seconds
