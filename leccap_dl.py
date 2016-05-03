@@ -24,8 +24,9 @@ def parse_args():
 def main():
     args = parse_args()
 
-    UNIQNAME = raw_input("Uniqname: ")
-    PASSWORD = getpass.getpass("Password: ")
+    uniqname = raw_input("Uniqname: ")
+    password = getpass.getpass("Password: ")
+
     # initialize browser
     browser = webdriver.Chrome(executable_path = './chromedriver')
     browser.implicitly_wait(60) # seconds
