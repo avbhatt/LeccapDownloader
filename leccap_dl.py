@@ -33,8 +33,8 @@ def main():
 
     # attempt login
     browser.get(LOGIN_URL)
-    browser.find_element_by_id("login").send_keys(UNIQNAME)
-    browser.find_element_by_id("password").send_keys(PASSWORD)
+    browser.find_element_by_id("login").send_keys(uniqname)
+    browser.find_element_by_id("password").send_keys(password)
     browser.find_element_by_id("loginSubmit").click()
 
     # go to course leccap page
