@@ -10,7 +10,6 @@ Requires Google Chrome and Selenium (`$ pip install selenium`).
 
 1. Download the most recent version ChromeDriver for your operating system from https://sites.google.com/a/chromium.org/chromedriver/downloads
 2. Extract the ChromeDriver zip and move the binary into the same directory as leccap_dl.py
-3. Set the `UNIQNAME` and `PASSWORD` fields in leccap_dl.py
 
 ## Usage
 
