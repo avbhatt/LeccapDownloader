@@ -2,10 +2,8 @@
 
 import argparse
 import urllib
+import getpass
 from selenium import webdriver
-
-UNIQNAME = # CHANGEME
-PASSWORD = # CHANGEME
 
 FILE_EXT = ".mp4"
 
@@ -26,14 +24,17 @@ def parse_args():
 def main():
     args = parse_args()
 
+    uniqname = raw_input("Uniqname: ")
+    password = getpass.getpass("Password: ")
+
     # initialize browser
     browser = webdriver.Chrome(executable_path = './chromedriver')
     browser.implicitly_wait(60) # seconds
 
     # attempt login
     browser.get(LOGIN_URL)
-    browser.find_element_by_id("login").send_keys(UNIQNAME)
-    browser.find_element_by_id("password").send_keys(PASSWORD)
+    browser.find_element_by_id("login").send_keys(uniqname)
+    browser.find_element_by_id("password").send_keys(password)
     browser.find_element_by_id("loginSubmit").click()
 
     # go to course leccap page
