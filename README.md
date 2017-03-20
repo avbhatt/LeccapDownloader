@@ -13,13 +13,14 @@ Requires Google Chrome and Selenium (`$ pip install selenium`).
 
 ## Usage
 
-`python leccap_dl.py course_uid file_prefix`
+`python leccap_dl.py course_uid -o [--output] OUTPUT_DIRECTORY -t [--threaded]`
 
 **Name** | **Type** | **Description**
 --- | --- | ---
 `course_uid` | string | **Required.** The unique course identifier, which can be found at the end of the leccap URL. Note that this is not the same as the unique identifier for an individual lecture recording.
-`file_prefix` | string | **Required.** The filename prefix. Lecture recordings are saved as the prefix followed by an integer.
+`--output OUTPUT_DIRECTORY` | string | **Optional.** The directory to output downloaded files to. Defaults to current directory.
+`--threaded`| flag | **Optional.** Runs each download in a separate thread. Minimal performance increase, no progress bar.
 
 #### Example
 
-`python leccap_dl.py hsfrlzcioe7xc71tu1w eecs482_lecture`
+`python leccap_dl.py n3yotibeo2l5zofckkx -o /home/user/videos -t`
