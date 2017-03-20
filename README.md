@@ -4,7 +4,7 @@ An automated lecture recording downloader designed to work with https://leccap.e
 
 This implementation downloads selected lectures for a given course into a given directory.
 
-Requires Google Chrome/Firefox/Edge/Safari, python3, and Selenium (`$ pip install selenium`).
+Requires Google Chrome/Firefox/Edge/Safari, python3, and Selenium (`pip install selenium`).
 
 ## Setup
 
