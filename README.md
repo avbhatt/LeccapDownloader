@@ -24,7 +24,8 @@ Requires Google Chrome/Firefox/Edge/Safari, python3, and Selenium (`$ pip instal
 
 **Name** | **Type** | **Description**
 --- | --- | ---
-`--threaded`| flag | **Optional.** Runs each download in a separate thread. Minimal performance increase, no progress bar.
+`-h [--help]` | flag | Show help message
+`-t [--threaded]`| flag | **Optional.** Runs each download in a separate thread. Minimal performance increase, no progress bar.
 `-i [--course-uid] COURSE_UID` | string | **Optional.** The unique course identifier, which can be found at the end of the leccap URL. Note that this is not the same as the unique identifier for an individual lecture recording. This allows for quick downloads if the course uid is known. If not, a menu of classes will appear.
 `-o [--output] OUTPUT_DIRECTORY` | string | **Optional.** The directory to output downloaded files to. Defaults to current directory.
 `-wdf [--web-driver-firefox] WEB_DRIVER_FIREFOX` | string | **Optional.** The location of the geckodriver. Defaults to PATH then current directory if not provided.
@@ -34,5 +35,7 @@ Requires Google Chrome/Firefox/Edge/Safari, python3, and Selenium (`$ pip instal
 
 #### Example
 `python leccap_dl.py`
+
 `python leccap_dl.py -t --course-uid n3yotibeo2l5zofckkx -o /home/user/videos -wdf /usr/local/bin/geckodriver`
+
 `python leccap_dl.py -o /home/user/videos -wdc /usr/local/bin/chromedriver`
