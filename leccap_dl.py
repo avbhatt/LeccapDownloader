@@ -19,14 +19,14 @@ def parse_args():
 	parser = argparse.ArgumentParser(\
 		description="An automated leccap recording downloader",\
 		epilog="example: python leccap_dl.py hsfrlzcioe7xc71tu1w [-o /home/user/videos] [-t]")
+	parser.add_argument("-t", "--threaded",\
+		help="if used, each download will be put in a new thread",\
+		action="store_true")
 	parser.add_argument("-i","--course-uid",\
 		help="the unique leccap course identifier")
 	parser.add_argument("-o", "--output-directory",\
 		default='.',\
 		help="directory to output files (default: current directory [.])")
-	parser.add_argument("-t", "--threaded",\
-		help="if used, each download will be put in a new thread",\
-		action="store_true")
 	parser.add_argument("-wdf", "--web-driver-firefox",\
 		help="specify location of firefox WebDriver if not in current directory or PATH")
 	parser.add_argument("-wdc", "--web-driver-chrome",\
