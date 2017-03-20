@@ -2,7 +2,7 @@
 
 An automated lecture recording downloader designed to work with https://leccap.engin.umich.edu.
 
-This implementation downloads all lectures for a given course into the current working directory.
+This implementation downloads selected lectures for a given course into a given directory.
 
 Requires Google Chrome and Selenium (`$ pip install selenium`).
 
