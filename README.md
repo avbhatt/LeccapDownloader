@@ -19,6 +19,7 @@ Requires Google Chrome/Firefox/Edge/Safari, python3, and Selenium (`$ pip instal
 
 ## Usage
 `python leccap_dl.py`
+
 `python leccap_dl.py [-h] [-t] [-i COURSE_UID] [-o OUTPUT_DIRECTORY] [-wdf WEB_DRIVER_FIREFOX] [-wdc WEB_DRIVER_CHROME]`
 
 **Name** | **Type** | **Description**
