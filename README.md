@@ -1,4 +1,4 @@
-# leccap_dl
+# LeccapDownloader
 
 An automated lecture recording downloader designed to work with https://leccap.engin.umich.edu.
 
