@@ -6,6 +6,7 @@ from clint.textui import progress
 import getpass
 from selenium import webdriver
 import threading
+import re
 
 FILE_EXT = ".mp4"
 
@@ -54,6 +55,7 @@ def main():
 		for classes in browser.find_elements_by_class_name("list-group-item"):
 			class_uid.append(classes.get_attribute("href").split("/")[-1])
 			print("[%d] Class: %s" % (i, classes.text))
+			i += 1
 		class_index = input("Select class: ")
 		leccap_course_url = LECCAP_BASE_URL + class_uid[int(class_index)]
 		browser.get(leccap_course_url)
@@ -93,7 +95,9 @@ def main():
 	# download videos
 	threads = []
 	for i in range(len(video_urls)):
-		filename =  output_directory + '/' + true_urls[i][1] + FILE_EXT
+		lec_name = true_urls[i][1]
+		lec_name = re.sub('[;/?:"=|*]','-',lec_name)
+		filename =  output_directory + '/' + lec_name + FILE_EXT
 		if args.threaded:
 			threads.append(threading.Thread(target=download_file, args=(filename, video_urls[i])))
 		else:
