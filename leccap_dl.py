@@ -7,6 +7,7 @@ import getpass
 from selenium import webdriver
 import threading
 import re
+import sys
 
 FILE_EXT = ".mp4"
 
@@ -23,7 +24,13 @@ def parse_args():
 	parser.add_argument("-o", "--output-directory",\
 		default='.',\
 		help="directory to output files (default: current directory [.])")
-	parser.add_argument("-t", "--threaded",help="if used, each download will be put in a new thread",action="store_true")
+	parser.add_argument("-t", "--threaded",\
+		help="if used, each download will be put in a new thread",\
+		action="store_true")
+	parser.add_argument("-wdf", "--web-driver-firefox",\
+		help="specify location of firefox WebDriver if not in current directory or PATH")
+	parser.add_argument("-wdc", "--web-driver-chrome",\
+		help="specify location of chrome WebDriver if not in current directory or PATH")
 
 	return parser.parse_args()
 
@@ -34,7 +41,88 @@ def main():
 	password = getpass.getpass("Password: ")
 
 	# initialize browser
-	browser = webdriver.Chrome('./chromedriver')
+	if args.web_driver_chrome:
+		try:
+			browser = webdriver.Chrome(args.web_driver_chrome)
+		except Exception:
+			try:
+				browser = webdriver.Chrome()
+			except Exception:
+				try:
+					browser = webdriver.Firefox()
+				except Exception:
+					if sys.platform == 'win32':
+						try:
+							browser = webdriver.Chrome('./chromedriver.exe')
+						except Exception:
+							try:
+								browser = webdriver.Firefox(executable_path='./geckodriver.exe')
+							except:
+								print("Please add Chrome/Firefox WebDriver to path or current directory", file=sys.stderr)
+								exit(1)
+					else:
+						try:
+							browser = webdriver.Chrome('./chromedriver')
+						except Exception:
+							try:
+								browser = webdriver.Firefox(executable_path='./geckodriver')
+							except:
+								print("Please add Chrome/Firefox WebDriver to path or current directory", file=sys.stderr)
+								exit(1)
+	elif args.web_driver_firefox:
+		try:
+			browser = webdriver.Firefox(executable_path=args.web_driver_firefox)
+		except Exception:
+			try:
+				browser = webdriver.Chrome()
+			except Exception:
+				try:
+					browser = webdriver.Firefox()
+				except Exception:
+					if sys.platform == 'win32':
+						try:
+							browser = webdriver.Chrome('./chromedriver.exe')
+						except Exception:
+							try:
+								browser = webdriver.Firefox(executable_path='./geckodriver.exe')
+							except:
+								print("Please add Chrome/Firefox WebDriver to path or current directory", file=sys.stderr)
+								exit(1)
+					else:
+						try:
+							browser = webdriver.Chrome('./chromedriver')
+						except Exception:
+							try:
+								browser = webdriver.Firefox(executable_path='./geckodriver')
+							except:
+								print("Please add Chrome/Firefox WebDriver to path or current directory", file=sys.stderr)
+								exit(1)
+	else:	
+		try:
+			browser = webdriver.Chrome()
+		except Exception:
+			try:
+				browser = webdriver.Firefox()
+			except Exception:
+				if sys.platform == 'win32':
+					try:
+						browser = webdriver.Chrome('./chromedriver.exe')
+					except Exception:
+						try:
+							browser = webdriver.Firefox(executable_path='./geckodriver.exe')
+						except:
+							print("Please add Chrome/Firefox WebDriver to path or current directory", file=sys.stderr)
+							exit(1)
+				else:
+					try:
+						browser = webdriver.Chrome('./chromedriver')
+					except Exception:
+						try:
+							browser = webdriver.Firefox(executable_path='./geckodriver')
+						except:
+							print("Please add Chrome/Firefox WebDriver to path or current directory", file=sys.stderr)
+							exit(1)
+
 	browser.implicitly_wait(60) # seconds
 
 	# attempt login
