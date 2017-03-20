@@ -4,7 +4,7 @@ An automated lecture recording downloader designed to work with https://leccap.e
 
 This implementation downloads selected lectures for a given course into a given directory.
 
-Requires Google Chrome/Firefox/Edge/Safari, python3, and Selenium (`pip install selenium`).
+Requires Google Chrome/Firefox/Edge/Safari, python3, and Selenium (`pip install -r requirements.txt`).
 
 ## Setup
 
@@ -16,6 +16,11 @@ Requires Google Chrome/Firefox/Edge/Safari, python3, and Selenium (`pip install 
 2. Extract the WebDriver zip and add the binary into your path
     * Alternatively, just put the binary (chromedriver or geckodriver) in the same folder as leccap_dl.py
     * Or, specify location to chromedriver or geckodriver using `-wdc` or `-wdf` respectively
+3. `pip install -r requirements.txt`
+    * This installs:
+         * selenium: needed to navigate browser without user input
+         * requests: needed to download video files
+         * clint: needed for progress bar on downloads
 
 ## Usage
 `python leccap_dl.py`
