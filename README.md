@@ -4,7 +4,7 @@ An automated lecture recording downloader designed to work with https://leccap.e
 
 This implementation downloads selected lectures for a given course into a given directory.
 
-Requires Google Chrome and Selenium (`$ pip install selenium`).
+Requires Google Chrome, python3, and Selenium (`$ pip install selenium`).
 
 ## Setup
 
@@ -13,14 +13,14 @@ Requires Google Chrome and Selenium (`$ pip install selenium`).
 
 ## Usage
 
-`python leccap_dl.py course_uid -o [--output] OUTPUT_DIRECTORY -t [--threaded]`
+`python leccap_dl.py -i [--course-uid] COURSE_UID -o [--output] OUTPUT_DIRECTORY -t [--threaded]`
 
 **Name** | **Type** | **Description**
 --- | --- | ---
-`course_uid` | string | **Required.** The unique course identifier, which can be found at the end of the leccap URL. Note that this is not the same as the unique identifier for an individual lecture recording.
+`--course-uid COURSE_UID` | string | **Optional.** The unique course identifier, which can be found at the end of the leccap URL. Note that this is not the same as the unique identifier for an individual lecture recording. This allows for quick downloads if the course uid is known. If not, a menu of classes will appear.
 `--output OUTPUT_DIRECTORY` | string | **Optional.** The directory to output downloaded files to. Defaults to current directory.
 `--threaded`| flag | **Optional.** Runs each download in a separate thread. Minimal performance increase, no progress bar.
 
 #### Example
-
-`python leccap_dl.py n3yotibeo2l5zofckkx -o /home/user/videos -t`
+`python leccap_dl.py`
+`python leccap_dl.py --course-uid n3yotibeo2l5zofckkx -o /home/user/videos -t`
