@@ -10,13 +10,14 @@ import threading
 FILE_EXT = ".mp4"
 
 LOGIN_URL = "https://weblogin.umich.edu/"
-LECCAP_BASE_URL = "https://leccap.engin.umich.edu/leccap/viewer/s/"
+LECCAP = "https://leccap.engin.umich.edu/leccap"
+LECCAP_BASE_URL = LECCAP + "/viewer/s/"
 
 def parse_args():
 	parser = argparse.ArgumentParser(\
 		description="An automated leccap recording downloader",\
 		epilog="example: python leccap_dl.py hsfrlzcioe7xc71tu1w [-o /home/user/videos] [-t]")
-	parser.add_argument("course_uid",\
+	parser.add_argument("-i","--course-uid",\
 		help="the unique leccap course identifier")
 	parser.add_argument("-o", "--output-directory",\
 		default='.',\
@@ -41,10 +42,22 @@ def main():
 	browser.find_element_by_id("password").send_keys(password)
 	browser.find_element_by_id("loginSubmit").click()
 
-	# go to course leccap page
-	leccap_course_url = LECCAP_BASE_URL + args.course_uid
-	browser.get(leccap_course_url)
-
+	if args.course_uid:
+		# go to course leccap page
+		leccap_course_url = LECCAP_BASE_URL + args.course_uid
+		browser.get(leccap_course_url)
+	else:
+		# find available courses
+		browser.get(LECCAP)
+		i = 0
+		class_uid = []
+		for classes in browser.find_elements_by_class_name("list-group-item"):
+			class_uid.append(classes.get_attribute("href").split("/")[-1])
+			print("[%d] Class: %s" % (i, classes.text))
+		class_index = input("Select class: ")
+		leccap_course_url = LECCAP_BASE_URL + class_uid[int(class_index)]
+		browser.get(leccap_course_url)
+	
 	# scrape lecture urls
 	lecture_urls = []
 	lecture_names = []
@@ -56,7 +69,7 @@ def main():
 			date = rec_info.find_element_by_class_name("recording-date").text
 			name = rec_info.find_element_by_class_name("recording-title").text
 			lecture_names.append(name)
-			print("[%d] Name: %s \t Date: %s" % (i,name, date))
+			print("[%d] Name: %s \t Date: %s" % (i, name, date))
 		i += 1
 	true_urls = []
 	print("Select video(s) to download (space delimited). * to download all")
