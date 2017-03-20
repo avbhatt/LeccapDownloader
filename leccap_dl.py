@@ -59,9 +59,12 @@ def main():
 			print("[%d] Name: %s \t Date: %s" % (i,name, date))
 		i += 1
 	true_urls = []
-	print("Select video(s) to download (space delimited)")
-	select_indices = [int(x) for x in input().split()]
-	true_urls = [(lecture_urls[i], lecture_names[i]) for i in select_indices]
+	print("Select video(s) to download (space delimited). * to download all")
+	select_indices = [x if x == '*' else int(x) for x in input().split()]
+	if select_indices[0] == '*':
+		true_urls = [(lecture_urls[i], lecture_names[i]) for i in range(len(lecture_urls))]
+	else:
+		true_urls = [(lecture_urls[i], lecture_names[i]) for i in select_indices]
 	video_urls = []
 	for (lec_url, useless) in true_urls:
 		browser.get(lec_url)
