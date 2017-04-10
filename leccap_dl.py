@@ -83,7 +83,7 @@ def main():
 			browser.get(LECCAP+"/"+str(year))
 			i = 0
 			class_uid = []
-			c = timed_get(browser, "list-group-item")
+			c = browser.find_elements_by_class_name("list-group-item")
 			if not c:
 				print("No classes found")
 				class_index = input("p/n to change year [%i]: "%year)
@@ -134,7 +134,6 @@ def main():
 		print("Select video(s) to download (space delimited). * to download all")
 		vids_list = input().split()
 		vids_list = list(filter(video_select, vids_list))
-	print(vids_list)
 	select_indices = [x if x == '*' else int(x) for x in vids_list]
 	if '*' in select_indices:
 		true_urls = [(lecture_urls[i], lecture_names[i]) for i in range(len(lecture_urls))]
@@ -183,16 +182,6 @@ def download_file(filename, url):
 		if chunk:
 			f.write(chunk)
 	f.close()
-
-def timed_get(browser, class_name):
-	start = time.time()
-	c = None
-	while time.time() - start < 5:
-		c = browser.find_elements_by_class_name(class_name)
-		if c:
-			break
-	return c
-
 
 def init_browser(chrome, firefox):
 	if chrome:
