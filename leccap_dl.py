@@ -6,14 +6,17 @@ from clint.textui import progress
 import getpass
 from selenium import webdriver
 import threading
+import time
 import re
 import sys
+import datetime
 
 FILE_EXT = ".mp4"
 
 LOGIN_URL = "https://weblogin.umich.edu/"
 LECCAP = "https://leccap.engin.umich.edu/leccap"
 LECCAP_BASE_URL = LECCAP + "/viewer/s/"
+YEAR = datetime.datetime.now().year
 
 def parse_args():
 	parser = argparse.ArgumentParser(\
@@ -51,20 +54,50 @@ def main():
 	browser.find_element_by_id("password").send_keys(password)
 	browser.find_element_by_id("loginSubmit").click()
 
+	class_select = re.compile('^[0-9]+$|^n$|^p$')
 	if args.course_uid:
 		# go to course leccap page
 		leccap_course_url = LECCAP_BASE_URL + args.course_uid
 		browser.get(leccap_course_url)
 	else:
 		# find available courses
-		browser.get(LECCAP)
+		year = YEAR
+		browser.get(LECCAP+"/"+str(year))
 		i = 0
 		class_uid = []
 		for classes in browser.find_elements_by_class_name("list-group-item"):
 			class_uid.append(classes.get_attribute("href").split("/")[-1])
 			print("[%d] Class: %s" % (i, classes.text))
 			i += 1
-		class_index = input("Select class: ")
+		class_index = input("Select class or p/n to change year [%i]: "%year)
+		while not class_select.search(class_index):
+			class_index = input("Select class or p/n to change year [%i]: "%year)
+		while class_index == 'p' or class_index == 'n':
+			# find available courses
+			if class_index == 'p':
+				year -= 1
+			elif class_index == 'n':
+				year += 1
+			if year > YEAR:
+				year = YEAR
+			browser.get(LECCAP+"/"+str(year))
+			i = 0
+			class_uid = []
+			c = timed_get(browser, "list-group-item")
+			if not c:
+				print("No classes found")
+				class_index = input("p/n to change year [%i]: "%year)
+				while class_index != 'p' and class_index != 'n':
+					class_index = input("p/n to change year [%i]: "%year)
+			else:
+				for classes in c:
+					class_uid.append(classes.get_attribute("href").split("/")[-1])
+					print("[%d] Class: %s" % (i, classes.text))
+					i += 1
+				class_index = input("Select class or p/n to change year [%i]: "%year)
+				while not class_select.search(class_index):
+					class_index = input("Select class or p/n to change year [%i]: "%year)
+
 		leccap_course_url = LECCAP_BASE_URL + class_uid[int(class_index)]
 		browser.get(leccap_course_url)
 	
@@ -85,9 +118,25 @@ def main():
 
 	# get src urls for selected lectures
 	true_urls = []
+	video_re = re.compile('[0-9]+|\*')
+	total_vid = i - 1
 	print("Select video(s) to download (space delimited). * to download all")
-	select_indices = [x if x == '*' else int(x) for x in input().split()]
-	if select_indices[0] == '*':
+	vids_list = input().split()
+	def video_select(item):
+		if not video_re.search(item):
+			return False
+		if str(item).isnumeric():
+			if int(item) < 0 or int(item) > total_vid:
+				return False
+		return True
+	vids_list = list(filter(video_select, vids_list))
+	while not vids_list:
+		print("Select video(s) to download (space delimited). * to download all")
+		vids_list = input().split()
+		vids_list = list(filter(video_select, vids_list))
+	print(vids_list)
+	select_indices = [x if x == '*' else int(x) for x in vids_list]
+	if '*' in select_indices:
 		true_urls = [(lecture_urls[i], lecture_names[i]) for i in range(len(lecture_urls))]
 	else:
 		true_urls = [(lecture_urls[i], lecture_names[i]) for i in select_indices]
@@ -134,6 +183,16 @@ def download_file(filename, url):
 		if chunk:
 			f.write(chunk)
 	f.close()
+
+def timed_get(browser, class_name):
+	start = time.time()
+	c = None
+	while time.time() - start < 5:
+		c = browser.find_elements_by_class_name(class_name)
+		if c:
+			break
+	return c
+
 
 def init_browser(chrome, firefox):
 	if chrome:
