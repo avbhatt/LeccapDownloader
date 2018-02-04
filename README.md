@@ -10,7 +10,7 @@ Requires Google Chrome/Firefox/Edge/Safari, python3, and Selenium (`pip install 
 
 1. Download the most recent Web Driver for your browser and operating system
     * ChromeDriver: https://sites.google.com/a/chromium.org/chromedriver/downloads
-    * FirefoxDriver (Marionette): https://github.com/mozilla/geckodriver/releases
+    * FirefoxDriver (Marionette): https://github.com/mozilla/geckodriver/releases [**NOT WORKING WITH QUANTUM**]
     * Edge: https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/ [Will **NOT** work unless source code is modified]
     * Safari: https://webkit.org/blog/6900/webdriver-support-in-safari-10/ [Will **NOT** work unless source code is modified]
 2. Extract the WebDriver zip and add the binary into your path
